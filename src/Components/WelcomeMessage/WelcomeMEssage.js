@@ -3,7 +3,7 @@ import React from 'react'
 const WelcomeMessage = () =>{
     return(
         <div>
-            <div className='white f3'>
+            <div className='white f2'>
                 {'Hi Simon, how will we change the world today?'}
             </div>
 
