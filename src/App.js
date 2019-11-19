@@ -17,7 +17,22 @@ class App extends Component{
       isSignedIn: false,
       categories: Categories,
       input:'',
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        joined: ''
+      }
     }
+  }
+
+  loadUser = (data) => {
+    this.setState({user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        joined: data.joined
+    }})
   }
 
   onRouteChange = (route) => {
@@ -45,14 +60,14 @@ class App extends Component{
           route === 'home'
           ?
           <div>
-            <WelcomeMessage />
+            <WelcomeMessage name={this.state.user.name}/>
             <SearchBox />
             <CardList categories={categories} />
           </div>
           : (
             route === 'signin'
-            ? <Signin onRouteChange={this.onRouteChange}/>
-            : <Register onRouteChange={this.onRouteChange}/>
+            ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+            : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
           )
         }
       </div>
