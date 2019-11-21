@@ -9,21 +9,22 @@ import CardList from './Components/CardList/CardList'
 import { Categories } from './Categories'
 import './App.css';
 
+const initialState ={
+    route: 'signin',
+    isSignedIn: false,
+    categories: Categories,
+    input:'',
+    user: {
+      id: '',
+      name: '',
+      email: '',
+      joined: ''
+    }
+}
 class App extends Component{
   constructor() {
     super();
-    this.state = {
-      route: 'signin',
-      isSignedIn: false,
-      categories: Categories,
-      input:'',
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        joined: ''
-      }
-    }
+    this.state = initialState;
   }
 
   loadUser = (data) => {
@@ -37,7 +38,7 @@ class App extends Component{
 
   onRouteChange = (route) => {
     if(route === 'signout'){
-      this.setState({isSignedIn: false});
+      this.setState(initialState);
     } else if (route === 'home'){
       this.setState({isSignedIn: true});
     }
