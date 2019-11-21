@@ -32,7 +32,7 @@ class Register extends React.Component{
         })
         .then(response => response.json())
         .then(user => {
-            if(user){
+            if(user.id){            // need to check for id b/c the server might send back a string with 'unable to...', which will set boolean to true
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
             }
