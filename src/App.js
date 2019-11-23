@@ -10,7 +10,7 @@ import { Categories } from './Categories'
 import './App.css';
 
 const initialState ={
-    route: 'signin',
+    route: 'home',
     isSignedIn: false,
     categories: Categories,
     input:'',
@@ -38,7 +38,7 @@ class App extends Component{
 
   onRouteChange = (route) => {
     if(route === 'signout'){
-      this.setState(initialState);
+      return this.setState(initialState);
     } else if (route === 'home'){
       this.setState({isSignedIn: true});
     }
@@ -61,7 +61,7 @@ class App extends Component{
           route === 'home'
           ?
           <div>
-            <WelcomeMessage name={this.state.user.name}/>
+            <WelcomeMessage name={this.state.user.name} />
             <SearchBox />
             <CardList categories={categories} />
           </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import './Card.css'
+import MetaList from '../MetaList/MetaList'
 
 const Card = ({ title, meta, id }) => {
     //const { title, meta, id } = props;      // destructuring the props
@@ -8,7 +9,9 @@ const Card = ({ title, meta, id }) => {
             <img alt='categories' src={require(`./images/${title}.jpg`)}/>
             <div>
                 <h2>{title}</h2>
-                <p className='bg-light-blue dib br3 pa2 ma2 bw2 shadow-5'>{meta}</p>
+                <div className='center'>
+                    <MetaList meta={meta} />
+                </div>
             </div>
         </div>
     );

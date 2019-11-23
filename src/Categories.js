@@ -3,21 +3,61 @@ export const Categories = [
     {
         id: 1,
         title: 'Kitchen',
-        meta: 'Home',
+        meta: [
+            {
+                title: 'Home'
+            },
+            {
+                title: 'Work'
+            }
+        ]
     },
     {
         id: 2,
         title: 'Bathroom',
-        meta: 'Home',
+        meta: [
+            {
+                title: 'Work'
+            }
+        ]
     },
     {
         id: 3,
         title: 'Groceries',
-        meta: 'Home',
+        meta: [
+            {
+                title: 'Home'
+            },
+            {
+                title: 'Work'
+            }
+        ]
     },
     {
         id: 4,
         title: 'Lunch',
-        meta: 'Work',
+        meta: [
+            {
+                title: 'Home'
+            }
+        ]
+    },
+    {
+        id: 5,
+        title: 'Lunch',
+        meta: [
+            {
+                title: 'Home'
+            }
+        ]
+    },
+    {
+        id: 6,
+        title: 'Lunch',
+        meta: [
+            {
+                title: 'Home'
+            }
+        ]
     }
 ];
