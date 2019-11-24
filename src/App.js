@@ -6,14 +6,13 @@ import Signin from './Components/Signin/Signin'
 import Register from './Components/Register/Register'
 import SearchBox from './Components/SearchBox/SearchBox'
 import CardList from './Components/CardList/CardList'
-import { Categories } from './Categories'
 import './App.css';
 
 const initialState ={
     route: 'home',
     isSignedIn: false,
-    categories: Categories,
-    input:'',
+    allCategories: [],
+    searchInput:'',
     user: {
       id: '',
       name: '',
@@ -45,11 +44,27 @@ class App extends Component{
     this.setState({route:route});
   }
 
+  onSearchChange = (event) => {
+    this.setState({ searchInput: event.target.value });
+  }
+
+  componentDidMount(){
+    fetch('http://localhost:3000/categories/meta')
+        .then(response => response.json())
+        .then(result => {
+            if(result[0].title.length){
+                this.setState({ allCategories: result })
+            } else{
+                // TODO wrap card in error handling component
+            }
+        }) 
+  }
+
   render(){
-    const { isSignedIn, route, categories } = this.state;
-  //   const filteredRobots =robots.filter(robot =>{
-  //     return robot.name.toLowerCase().includes(searchField.toLowerCase())
-  // }) 
+    const { isSignedIn, route, user, allCategories, searchInput } = this.state;
+    const filteredCategories =allCategories.filter(categorie =>{
+      return categorie.title.toLowerCase().includes(searchInput.toLowerCase())
+  }) 
 
     return (
       <div className="App">
@@ -61,9 +76,9 @@ class App extends Component{
           route === 'home'
           ?
           <div>
-            <WelcomeMessage name={this.state.user.name} />
-            <SearchBox />
-            <CardList categories={categories} />
+            <WelcomeMessage name={user.name} />
+            <SearchBox searchChange={this.onSearchChange} />
+            <CardList categories={filteredCategories} />
           </div>
           : (
             route === 'signin'
