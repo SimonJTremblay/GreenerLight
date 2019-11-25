@@ -6,10 +6,13 @@ import Signin from './Components/Signin/Signin'
 import Register from './Components/Register/Register'
 import SearchBox from './Components/SearchBox/SearchBox'
 import CardList from './Components/CardList/CardList'
+import {
+  IS_ADMIN
+} from './constants'
 import './App.css';
 
 const initialState ={
-    route: 'home',
+    route: 'signin',
     isSignedIn: false,
     allCategories: [],
     searchInput:'',
@@ -17,7 +20,8 @@ const initialState ={
       id: '',
       name: '',
       email: '',
-      joined: ''
+      joined: '',
+      permission: 0,
     }
 }
 class App extends Component{
@@ -31,7 +35,8 @@ class App extends Component{
         id: data.id,
         name: data.name,
         email: data.email,
-        joined: data.joined
+        joined: data.joined,
+        permission: data.permission
     }})
   }
 
@@ -40,6 +45,7 @@ class App extends Component{
       return this.setState(initialState);
     } else if (route === 'home'){
       this.setState({isSignedIn: true});
+      this.getCategories();
     }
     this.setState({route:route});
   }
@@ -49,6 +55,10 @@ class App extends Component{
   }
 
   componentDidMount(){
+    this.getCategories();
+  }
+
+  getCategories = () => {
     fetch('http://localhost:3000/categories/meta')
         .then(response => response.json())
         .then(result => {
@@ -64,13 +74,18 @@ class App extends Component{
     const { isSignedIn, route, user, allCategories, searchInput } = this.state;
     const filteredCategories =allCategories.filter(categorie =>{
       return categorie.title.toLowerCase().includes(searchInput.toLowerCase())
-  }) 
+    }) 
 
     return (
       <div className="App">
         <div className='flex justify-between pa3'>
           <Logo />
-          <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+          {
+            (route === 'home' && user.permission === IS_ADMIN) &&
+              <h1>ADMIN</h1>
+          }
+            <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+
         </div>
         {
           route === 'home'
