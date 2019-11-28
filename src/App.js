@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import Navigation from './Components/Navigation/Navigation'
-import Logo from './Components/Logo/Logo'
-import WelcomeMessage from './Components/WelcomeMessage/WelcomeMEssage'
-import Signin from './Components/Signin/Signin'
-import Register from './Components/Register/Register'
-import SearchBox from './Components/SearchBox/SearchBox'
-import CardList from './Components/CardList/CardList'
+import Navigation from './Components/Navigation/Navigation';
+import Logo from './Components/Logo/Logo';
+import WelcomeMessage from './Components/WelcomeMessage/WelcomeMEssage';
+import Signin from './Components/Signin/Signin';
+import Register from './Components/Register/Register';
+import SearchBox from './Components/SearchBox/SearchBox';
+import CardList from './Components/CardList/CardList';
+import './App.css';
 import {
   IS_ADMIN
-} from './constants'
-import './App.css';
+} from './constants';
 
 const initialState ={
-    route: 'signin',
+    route: 'home',
     isSignedIn: false,
     allCategories: [],
     searchInput:'',
