@@ -6,6 +6,7 @@ import Signin from './Components/Signin/Signin';
 import Register from './Components/Register/Register';
 import SearchBox from './Components/SearchBox/SearchBox';
 import CardList from './Components/CardList/CardList';
+import Donate from './Components/Donate/Donate'
 import './App.css';
 import {
   IS_ADMIN
@@ -13,7 +14,7 @@ import {
 
 const initialState ={
     route: 'home',
-    isSignedIn: false,
+    isSignedIn: true,
     allCategories: [],
     searchInput:'',
     user: {
@@ -84,22 +85,27 @@ class App extends Component{
             (route === 'home' && user.permission === IS_ADMIN) &&
               <h1>ADMIN</h1>
           }
+
             <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
 
         </div>
         {
-          route === 'home'
+          route === 'donate'
           ?
-          <div>
-            <WelcomeMessage name={user.name} />
-            <SearchBox searchChange={this.onSearchChange} />
-            <CardList categories={filteredCategories} />
-          </div>
-          : (
-            route === 'signin'
-            ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
-            : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
-          )
+            <Donate />
+          :
+            route === 'home'
+            ?
+              <div>
+                <WelcomeMessage name={user.name} />
+                <SearchBox searchChange={this.onSearchChange} />
+                <CardList categories={filteredCategories} />
+              </div>
+            : (
+                route === 'signin'
+                ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+                : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+              )
         }
       </div>
     );
