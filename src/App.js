@@ -6,14 +6,16 @@ import Signin from './Components/Signin/Signin';
 import Register from './Components/Register/Register';
 import SearchBox from './Components/SearchBox/SearchBox';
 import CardList from './Components/CardList/CardList';
-import Donate from './Components/Donate/Donate'
+import Donate from './Components/Donate/Donate';
+import Modal from './Components/Modal/Modal';
+import AddCategory from './Components/AddCategory/AddCategory';
 import './App.css';
 import {
   IS_ADMIN
 } from './constants';
 
 const initialState ={
-    route: 'donate',  //signin by default
+    route: 'home',  //signin by default
     isSignedIn: true, // false by default
     allCategories: [],
     searchInput:'',
@@ -22,8 +24,9 @@ const initialState ={
       name: '',
       email: '',
       joined: '',
-      permission: 0,
-    }
+      permission: IS_ADMIN,
+    },
+    showModal: false,
 }
 class App extends Component{
   constructor() {
@@ -54,6 +57,18 @@ class App extends Component{
   onSearchChange = (event) => {
     this.setState({ searchInput: event.target.value });
   }
+
+  onAddCategory = () => {
+    this.setState({ route: 'addCategory'});
+  }
+
+  showModal = () => {
+    this.setState({ showModal: true });
+  };
+
+  hideModal = () => {
+    this.setState({ showModal: false });
+  };
 
   componentDidMount(){
     this.getCategories();
@@ -98,8 +113,14 @@ class App extends Component{
             ?
               <div>
                 <WelcomeMessage name={user.name} />
-                <SearchBox searchChange={this.onSearchChange} />
+                <div className="flex center">
+                  <SearchBox searchChange={this.onSearchChange} />
+                  <button className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" onClick={() => this.showModal()}>Add Category</button>                 
+                </div>
                 <CardList categories={filteredCategories} />
+                <Modal show={this.state.showModal} handleClose={this.hideModal}>
+                  <AddCategory />
+                </Modal>
               </div>
             : (
                 route === 'signin'
