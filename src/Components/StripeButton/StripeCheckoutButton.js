@@ -2,9 +2,9 @@ import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 import logoImg from '../Logo/logo.png';
 
-const StripeCheckoutButton = ({ price }) => {
+const StripeCheckoutButton = ({ totalDonation, selectedCharity }) => {
   // stripe wants the price in cents 
-  const priceForStripe = price * 100;
+  const priceForStripe = totalDonation * 100;
   const publishableKey = 'pk_test_afP0N0oHo3f54ZOOf54iD2hu00pfzgXvF2';
 
   //onToken is when a successful transaction takes place, returns token
@@ -16,12 +16,12 @@ const StripeCheckoutButton = ({ price }) => {
   return (
     <StripeCheckout
       label='Donate'
-      name='GreenerLight'
+      name={selectedCharity}
       billingAddress
       shippingAddress
       image={logoImg}
-      description={`Your donation is $${price}`}
-      amout={priceForStripe}
+      description={`Donation of $${totalDonation}`}
+      amount={priceForStripe}
       panelLabel='Pay Now'
       token={onToken}
       stripeKey={publishableKey}    

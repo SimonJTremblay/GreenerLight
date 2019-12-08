@@ -13,8 +13,8 @@ import {
 } from './constants';
 
 const initialState ={
-    route: 'home',
-    isSignedIn: true,
+    route: 'donate',  //signin by default
+    isSignedIn: true, // false by default
     allCategories: [],
     searchInput:'',
     user: {

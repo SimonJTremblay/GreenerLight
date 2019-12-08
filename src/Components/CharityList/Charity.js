@@ -1,14 +1,17 @@
 import React from 'react'
 import './Charity.css'
 
-const Charity = ({ id, name, url, description, imageURL }) => {
+const Charity = ({name, url, description, imageURL, onComponentCharityChange}) => {
     return(
-        <div className='tc bg-light-blue dib br3 pa3 ma2 grow bw2 shadow-5'>
+        <div 
+            className='tc bg-washed-green dib br3 pa3 ma2 grow bw2 shadow-5'
+            onClick={() => onComponentCharityChange(name)}
+        >
             <img className="charity-logo" alt='charities' src={imageURL}/>
-            <div>
-                <h2>{id}</h2>
-                <h2>{name}</h2>
-                
+            <div className="pv3">
+                <a className="f4 fw6 db purple no-underline underline-hover" href= {url}>
+                    {name}
+                </a>
             </div>
         </div>
     );
