@@ -9,14 +9,16 @@ import CardList from './Components/CardList/CardList';
 import Donate from './Components/Donate/Donate';
 import Modal from './Components/Modal/Modal';
 import AddCategory from './Components/AddCategory/AddCategory';
+import Admin from './Components/Admin/Admin';
 import './App.css';
 import {
-  IS_ADMIN
+  IS_ADMIN,
+  IS_USER,
 } from './constants';
 
 const initialState ={
-    route: 'home',  //signin by default
-    isSignedIn: true, // false by default
+    route: 'signin',  //signin by default
+    isSignedIn: false, // false by default
     allCategories: [],
     searchInput:'',
     user: {
@@ -24,9 +26,13 @@ const initialState ={
       name: '',
       email: '',
       joined: '',
-      permission: IS_ADMIN,
+      permission: IS_USER,
     },
     showModal: false,
+    areRequestsPending: false,
+    PendingRequestsList:[],
+    updateRequestMessage:''
+
 }
 class App extends Component{
   constructor() {
@@ -50,6 +56,7 @@ class App extends Component{
     } else if (route === 'home'){
       this.setState({isSignedIn: true});
       this.getCategories();
+      this.getCategoriesRequests();
     }
     this.setState({route:route});
   }
@@ -72,6 +79,7 @@ class App extends Component{
 
   componentDidMount(){
     this.getCategories();
+    this.getCategoriesRequests();
   }
 
   getCategories = () => {
@@ -86,28 +94,83 @@ class App extends Component{
         }) 
   }
 
+  getCategoriesRequests = () => {
+    fetch('http://localhost:3000/categories/pending')
+      .then(response => response.json())
+      .then(result => {
+        if(result){
+          if(result[0].title.length){
+              this.setState({ areRequestsPending: true, PendingRequestsList: result })
+          } else{
+              // TODO wrap card in error handling component
+          }
+        }
+      }) 
+      .catch(err => {});  // not use how to deal with null return from knex
+  }
+
+  updatePendingCategories = (categoryId, answer) => {
+    fetch('http://localhost:3000/categories/pending/', {
+            method: 'PUT',
+            headers: {'Content-Type' : 'application/json'},
+            body:JSON.stringify({
+                id: categoryId,
+                state: answer === 'yes'? 1 : 3
+            })
+        })
+        .then(response => response.json())
+        .then(category => {
+            if(category[0].id){ 
+                this.setState(
+                    {   
+                      updateRequestMessage: `Success`,
+                    },
+                )
+            }
+        })
+  }
+
   render(){
-    const { isSignedIn, route, user, allCategories, searchInput } = this.state;
+    const { isSignedIn, route, user, allCategories, searchInput, areRequestsPending, PendingRequestsList, updateRequestMessage } = this.state;
     const filteredCategories =allCategories.filter(categorie =>{
       return categorie.title.toLowerCase().includes(searchInput.toLowerCase())
-    }) 
+    })
+    const filteredCategoriesPending =PendingRequestsList.filter(categorie =>{
+      return categorie.state === 2;
+    })  
 
     return (
       <div className="App">
         <div className='flex justify-between pa3'>
           <Logo />
-          {
+          {/* {
             (route === 'home' && user.permission === IS_ADMIN) &&
-              <h1>ADMIN</h1>
-          }
+            <div className=" flex justify-center">
+              <h2>ADMIN</h2>
+              <IoIosWarning className="f2 red"/>
+            </div>
+          } */}
 
-            <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+            <Navigation
+              isSignedIn={isSignedIn}
+              onRouteChange={this.onRouteChange}
+              userPermission={user.permission}
+              areRequestsPending={areRequestsPending}
+            />
 
         </div>
         {
           route === 'donate'
           ?
             <Donate />
+          :
+          route ==='admin'
+          ?
+            <Admin 
+              PendingRequestsList={filteredCategoriesPending}
+              updatePendingCategories={this.updatePendingCategories}
+              updateRequestMessage={updateRequestMessage}
+            />
           :
             route === 'home'
             ?
