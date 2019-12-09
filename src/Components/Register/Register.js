@@ -53,6 +53,7 @@ class Register extends React.Component{
                                 type="text" 
                                 name="name"  
                                 id="name"
+                                autoComplete="off"
                                 onChange={ this.onNameChange }
                                 />
                             </div>
@@ -63,6 +64,7 @@ class Register extends React.Component{
                                 type="email" 
                                 name="email-address"  
                                 id="email-address"
+                                autoComplete="off"
                                 onChange={ this.onEmailChange }
                                 />
                             </div>
@@ -73,6 +75,7 @@ class Register extends React.Component{
                                 type="password" 
                                 name="password"  
                                 id="password"
+                                autoComplete="off"
                                 onChange={ this.onPasswordChange }
                                 />
                             </div>

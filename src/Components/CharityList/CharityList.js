@@ -16,7 +16,7 @@ class CharityList extends Component {
     render(){
         const { charities } = this.props;
         return(
-            <div>
+            <div className="flex items-center justify-around">
                 {
                     charities.map(({id, ...otherSectionProps }) => (
                         <Charity 
